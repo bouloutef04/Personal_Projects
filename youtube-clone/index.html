@@ -6,7 +6,52 @@
     <link rel="stylesheet" href="style.css">
     <title>HomePage</title>
 </head>
+<script>
+    function activate(){
+        $(this).toggleClass('category active');
+    }
+</script>
 <body>
+    <header class="header">
+        <div class="side-bar">
+            <img src="list_24dp_E8EAED.png" alt="Side Bar" class="button-images"/>
+        </div>
+
+        <a href="#">
+            <img src="logo.png" alt="YouTube Logo" class="youtube-logo"/>
+        </a>
+        <form class="search-bar">
+            <input type="search" class="search-input" placeholder="Search" aria-label="Search">
+            <button type="submit" class="search-button">
+                <img src="search_24dp_E8EAED.png" class="button-images"/>
+            </button>
+        </form>
+        <div class="menu-icons">
+            <a href="#">
+                <img src="video_call_24dp_E8EAED.png" alt="Upload Video" class="button-images"/>
+            </a>
+            <a href="#">
+                <img src="notifications_24dp_E8EAED.png" alt="Notification" class="button-images"/>
+            </a>
+            <a href="#">
+                <img src="account_circle_24dp_E8EAED.png" alt="Your Channel" class="button-images"/>
+            </a>
+        </div>
+    </header>
+    <div class="top-section">
+
+    </div>
+    <div class="categories">
+        <section class="category-section">
+            <button class="category active" name="All">All</button>
+            <button class="category" name="cat1" onclick="activate()">Category 1</button>
+            <button class="category" name="cat2">Category 2</button>
+            <button class="category" name="cat3">Category 3</button>
+            <button class="category" name="cat4">Category 4</button>
+            <button class="category" name="cat5">Category 5</button>
+            <button class="category" name="cat6">Category 6</button>
+        </section>
+    </div>
     <div class="videos"><!--Division for videos-->
         <section class="video-section">
             <article class="video-container">
@@ -15,16 +60,16 @@
                     <img class="thumbnail-image" src="file:///Users/fredrickbouloute/Desktop/ScreenShots/Screenshot%202024-10-05%20at%2010.13.25%20PM.png"/>
                 </a>
                 <div class="video-bottom-section"> <!--Details for the YouTube video (ie. CHannel name, title, views, etc.)-->
-                    <a href="#" class="profile">
+                    <a href="https://www.youtube.com/@ProdTokyoX" class="profile">
                         <img class="profile-image" src="https://yt3.googleusercontent.com/X1yR51fEpOCs9ZDbUPwKl_SmoWTZyPC5tRFCnciqahN19MEm6tBfh20KFOyhKuNfdTCNprJt=s176-c-k-c0x00ffffff-no-rj-mo"/>
                     </a>
                     <div class="video-details">
-                        <a href="#" class="video-title">Use Your Heart 2</a>
+                        <a href="https://www.youtube.com/channel/UCIYXsInIhT7rBKKb9EF4GpA" class="video-title">Use Your Heart 2</a>
                         <a href="https://www.youtube.com/channel/UCIYXsInIhT7rBKKb9EF4GpA" class="video-channel-name">Prod. TokyoX</a>
                         <div class="video-metadata">
-                            <span>12k views</span>
+                            <span>382 views</span>
                             •
-                            <span>2 days ago</span>
+                            <span>2 months ago</span>
                         </div>
                     </div>
                     
