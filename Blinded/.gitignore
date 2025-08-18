@@ -1,0 +1,113 @@
+# ===========================================
+# UNITY - SAFE & CLEAN .GITIGNORE
+# ===========================================
+
+# ========== Unity Generated Files ==========
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+MemoryCaptures/
+Logs/
+UserSettings/
+*.stacktrace
+
+# ========== Unity Package Cache ==========
+# Prevent broken dependencies and large cache files
+Packages/com.unity.*.lock
+**/Library/PackageCache/
+**/Library/ScriptAssemblies/
+**/Library/Bee/
+
+# ========== Assets Metadata ==========
+*.pidb
+*.booproj
+*.svd
+*.user
+*.userprefs
+
+# ========== Visual Studio / JetBrains Rider ==========
+.vscode/
+.idea/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.log
+*.bak
+
+# ========== OS Generated Files ==========
+.DS_Store
+Thumbs.db
+
+# ========== Crash Reports ==========
+*.dmp
+*.mdmp
+
+# ========== Executables ==========
+*.exe
+*.app
+*.apk
+*.x86
+*.x86_64
+*.out
+*.i*86
+*.hex
+
+# ========== Libraries and Binaries ==========
+*.dll
+*.dll.meta
+*.so
+*.so.*
+*.dylib
+*.lib
+*.a
+*.la
+*.lo
+*.obj
+*.o
+*.ko
+*.elf
+*.ilk
+*.exp
+*.map
+*.gch
+*.pch
+*.dwlt
+
+# ========== DOTween Exceptions ==========
+# Keep this one to preserve DOTween settings!
+!Assets/Resources/DOTweenSettings.asset
+
+# Optional: UnityPackages & Archives
+*.unitypackage
+*.zip
+*.tar.gz
+
+# Ignoring User Settings
+default-6000.dwlt
+
+# ========== Kernel & Modules ==========
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+dkms.conf
+
+# ========== Rider logs and temp ==========
+.idea/
+.idea_modules/
+.idea_workspace/
+.idea_content/
+.idea_project/
+*.ipr
+*.iws
+
+#=========== Extra Files that should be ignored ======
+EditorUserSettings.asset
+packages-lock.json
+Search.settings
