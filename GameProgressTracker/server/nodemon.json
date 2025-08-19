@@ -1,0 +1,8 @@
+{
+    "watchers": {
+        "limit": 524288
+    },
+    "watch": ["src"],
+    "ext" : "js,json",
+    "exec": "node index.js"
+}
