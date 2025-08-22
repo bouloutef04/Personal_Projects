@@ -19,7 +19,7 @@ app.post('/signup', async (req, res) => {
   try {
     const { username, password, email } = req.body
 
-    if ((username || password) == null)
+    if ((!username || !password))
       return res.status(400).json({
         error: 'Missing Username or Password'
       })
@@ -52,13 +52,13 @@ app.post('/signup', async (req, res) => {
 app.get('/login', async (req, res) => {
   try {
     const { username, password, email } = req.body
-    if ((username || password) == null)
+    if ((!username || !password))
       return res.status(400).json({
         error: 'Missing Username or Password'
       })
 
     if (typeof username !== 'string' || typeof password !== 'string') {
-      if ((username || password) == null)
+      if ((!username || !password))
         return res.status(400).json({
           error: ' Username or Password is not a string'
         })
@@ -81,7 +81,7 @@ app.get('/login', async (req, res) => {
 app.put('/updateAccount', async (req, res) => {
   try {
     const { user_id, username, password } = req.body
-    if (user_id == null || username == null || password == null) {
+    if (!user_id || !username || !password) {
       return res.status(400).json({
         error: 'user_id, username or password is missing'
       })
@@ -112,7 +112,7 @@ app.put('/updateAccount', async (req, res) => {
 app.delete('/deleteAccount', async (req, res) => {
   try {
     const { user_id } = req.body
-    if (user_id == null) {
+    if (!user_id) {
       return res.status(400).json({
         error: 'user_id is missing'
       })
@@ -148,7 +148,7 @@ app.post('/createGame', async (req, res) => {
       game_playTime
     } = req.body
 
-    if (game_name == null || user_id == null) {
+    if (!game_name || !user_id) {
       return res.status(400).json({
         error: 'user_id or game_name is missing'
       })

@@ -35,4 +35,27 @@ describe('POST /signup', () => {
     expect(result.rowCount).toBe(1);
     expect(response.body.id).toBe(result.rows[0].user_id);
   });
+
+  it('should not create a new user and return status 400 due to missing items', async ()=>{
+    const newUser = {
+        username: '_test',
+        email: 'temp@gmail.com',
+    };
+
+    const response = await request(app).post('/signup').send(newUser);
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body.error).toBe('Missing Username or Password');
+
+    const newUser2 = {
+        password: 'password',
+        email: 'temp@gmail.com',
+    };
+
+    const response2 = await request(app).post('/signup').send(newUser2);
+
+    expect(response2.statusCode).toBe(400);
+    expect(response2.body.error).toBe('Missing Username or Password');
+
+  })
 });
