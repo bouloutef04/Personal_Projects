@@ -84,27 +84,28 @@ app.put('/updateAccount', async (req, res) => {
     if (user_id == null || username == null || password == null) {
       return res.status(400).json({
         error: 'user_id, username or password is missing'
-      });
+      })
     }
 
-    if(typeof user_id !== 'number')
-        return res.status(400).json({
+    if (typeof user_id !== 'number')
+      return res.status(400).json({
         error: 'user_id is not a number'
-      });
-    
-    if(typeof username !== 'string' || typeof password !== 'string'){
-        return res.status(400).json({
+      })
+
+    if (typeof username !== 'string' || typeof password !== 'string') {
+      return res.status(400).json({
         error: 'username or password is not a string'
-      });
+      })
     }
 
-    const update = await pool.query('UPDATE Users SET user_username = $1, user_password = $2 WHERE user_id = $3',
-        [username, password, user_id]
-    );
+    const update = await pool.query(
+      'UPDATE Users SET user_username = $1, user_password = $2 WHERE user_id = $3',
+      [username, password, user_id]
+    )
 
-    res.json({error:''});
+    res.json({ error: '' })
   } catch (err) {
-    return res.status(400).json({error: err.message })
+    return res.status(400).json({ error: err.message })
   }
 })
 
@@ -130,6 +131,68 @@ app.delete('/deleteAccount', async (req, res) => {
     return res.status(200).json({ error: 'Account deleted' })
   } catch (err) {
     return res.status(400).json({ error: err.message })
+  }
+})
+
+//Games API
+
+app.post('/createGame', async (req, res) => {
+  try {
+    const {
+      game_name,
+      user_id,
+      game_finished,
+      game_totalAchievements,
+      game_achievementsEarned,
+      game_image,
+      game_playTime
+    } = req.body
+
+    if (game_name == null || user_id == null) {
+      return res.status(400).json({
+        error: 'user_id or game_name is missing'
+      })
+    }
+    if (typeof user_id !== 'number')
+      return res.status(400).json({
+        error: 'user_id is not a number'
+      })
+
+    if (
+      typeof game_name !== 'string' ||
+      typeof game_totalAchievements !== 'number' ||
+      typeof game_achievementsEarned !== 'number' ||
+      typeof game_playTime !== 'number'
+    ) {
+      return res.status(400).json({
+        error:
+          'game_name is not a string or achievements/playtime are not numbers'
+      })
+    }
+    if (typeof game_finished !== 'boolean' || typeof game_image !== 'string') {
+      return res.status(400).json({
+        error: 'game_finished is not a boolean or game_image is not a string'
+      })
+    }
+
+    const newGame = await pool.query(
+      'INSERT INTO Games (game_name, game_finished, game_totalAchievements, game_achievementsEarned, game_image, game_playTime, user_id) Values ($1, $2, $3, $4, $5, $6, $7) RETURNING *;',
+      [
+        game_name,
+        game_finished,
+        game_totalAchievements,
+        game_achievementsEarned,
+        game_image,
+        game_playTime,
+        user_id
+      ]
+    )
+
+    return res.status(200).json({ id: newGame.rows[0].game_id, error: '' })
+  } catch (err) {
+    return res
+      .status(400)
+      .json({error: err.message })
   }
 })
 
