@@ -120,7 +120,7 @@ app.delete('/deleteAccount', async (req, res) => {
 
     if (typeof user_id !== 'number') {
       return res.status(400).json({
-        error: 'user_id is not a string'
+        error: 'user_id is not a number'
       })
     }
 
