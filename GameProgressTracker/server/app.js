@@ -26,7 +26,7 @@ app.post('/signup', async (req, res) => {
 
     if (typeof username !== 'string' || typeof password !== 'string') {
       return res.status(400).json({
-        error: ' Username or Password is not a string'
+        error: 'Username or Password is not a string'
       })
     }
 
@@ -71,7 +71,7 @@ app.get('/login', async (req, res) => {
     if (checkUsers.rowCount > 0) {
       return res.status(200).json({ id: checkUsers.rows[0].user_id, error: '' })
     } else {
-      return res.status(200).json({ error: 'User not found' })
+      return res.status(404).json({ error: 'User not found'})
     }
   } catch (err) {
     return res.status(400).json({ error: err.message })
