@@ -1,5 +1,5 @@
 const express = require('express')
-const app = express();
+const app = express()
 const cors = require('cors')
 const pool = require('./db')
 
@@ -19,7 +19,7 @@ app.post('/signup', async (req, res) => {
   try {
     const { username, password, email } = req.body
 
-    if ((!username || !password))
+    if (!username || !password)
       return res.status(400).json({
         error: 'Missing Username or Password'
       })
@@ -52,13 +52,13 @@ app.post('/signup', async (req, res) => {
 app.get('/login', async (req, res) => {
   try {
     const { username, password, email } = req.body
-    if ((!username || !password))
+    if (!username || !password)
       return res.status(400).json({
         error: 'Missing Username or Password'
       })
 
     if (typeof username !== 'string' || typeof password !== 'string') {
-      if ((!username || !password))
+      if (!username || !password)
         return res.status(400).json({
           error: ' Username or Password is not a string'
         })
@@ -71,7 +71,7 @@ app.get('/login', async (req, res) => {
     if (checkUsers.rowCount > 0) {
       return res.status(200).json({ id: checkUsers.rows[0].user_id, error: '' })
     } else {
-      return res.status(404).json({ error: 'User not found'})
+      return res.status(404).json({ error: 'User not found' })
     }
   } catch (err) {
     return res.status(400).json({ error: err.message })
@@ -103,7 +103,7 @@ app.put('/updateAccount', async (req, res) => {
       [username, password, user_id]
     )
 
-    res.json({ error: '' })
+    res.status(200).json({ error: '' })
   } catch (err) {
     return res.status(400).json({ error: err.message })
   }
@@ -138,6 +138,7 @@ app.delete('/deleteAccount', async (req, res) => {
 
 app.post('/createGame', async (req, res) => {
   try {
+    //Ensure that the frontend sends in empty strings if no input is set
     const {
       game_name,
       user_id,
@@ -190,9 +191,58 @@ app.post('/createGame', async (req, res) => {
 
     return res.status(200).json({ id: newGame.rows[0].game_id, error: '' })
   } catch (err) {
-    return res
-      .status(400)
-      .json({error: err.message })
+    return res.status(400).json({ error: err.message })
   }
 })
-module.exports = app;
+
+app.put('/updateGame', async (req, res) => {
+  try {
+    const {
+      game_name,
+      user_id,
+      game_id,
+      game_finished,
+      game_totalAchievements,
+      game_achievementsEarned,
+      game_image,
+      game_playTime
+    } = req.body
+
+    if (!game_name || !user_id || !game_id) {
+      return res.status(400).json({
+        error: 'game_id, user_id or game_name is missing'
+      })
+    }
+    if (typeof game_id !== 'number' || typeof user_id !== 'number')
+      return res.status(400).json({
+        error: 'game_id or user_id is not a number'
+      })
+
+    if (
+      typeof game_name !== 'string' ||
+      typeof game_totalAchievements !== 'number' ||
+      typeof game_achievementsEarned !== 'number' ||
+      typeof game_playTime !== 'number'
+    ) {
+      return res.status(400).json({
+        error:
+          'game_name is not a string or achievements/playtime are not numbers'
+      })
+    }
+    if (typeof game_finished !== 'boolean' || typeof game_image !== 'string') {
+      return res.status(400).json({
+        error: 'game_finished is not a boolean or game_image is not a string'
+      })
+    }
+
+    const update = await pool.query(
+        'UPDATE Games SET game_name = $1, game_finished = $2, game_totalAchievements = $3, game_achievementsEarned = $4, game_image = $5, game_playTIme = $6 WHERE game_id = $7',
+        [game_name, game_finished, game_totalAchievements, game_achievementsEarned, game_image, game_playTime, game_id]
+    )
+
+    res.status(200).json({ error: '' })
+  } catch (err) {
+    return res.status(400).json({ error: err.message })
+  }
+})
+module.exports = app
