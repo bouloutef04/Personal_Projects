@@ -68,7 +68,7 @@ describe('GET /getGames', () => {
     expect(result.rowCount).toBe(1)
 
     const userGames = {
-        user_id: newUserQuery.rows[0].user_id
+      user_id: newUserQuery.rows[0].user_id
     }
 
     const response = await request(app).get('/getGames').send(userGames)
@@ -77,9 +77,9 @@ describe('GET /getGames', () => {
     expect(response.body.error).toBe('')
   })
 
-  it('should return error code 400 due to missing user_id', async () =>{
+  it('should return error code 400 due to missing user_id', async () => {
     const userGames = {
-        id: 1
+      id: 1
     }
     const response = await request(app).get('/getGames').send(userGames)
 
@@ -87,9 +87,9 @@ describe('GET /getGames', () => {
     expect(response.body.error).toBe('user_id is missing')
   })
 
-  it('should return error code 400 due to user_id not being a number', async () =>{
+  it('should return error code 400 due to user_id not being a number', async () => {
     const userGames = {
-        user_id: '1'
+      user_id: '1'
     }
     const response = await request(app).get('/getGames').send(userGames)
 
