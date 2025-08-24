@@ -195,6 +195,32 @@ app.post('/createGame', async (req, res) => {
   }
 })
 
+app.get('/getGames', async (req, res) => {
+  try {
+    const { user_id } = req.body
+
+    if (!user_id) {
+      return res.status(400).json({
+        error: 'user_id is missing'
+      })
+    }
+    if (typeof user_id !== 'number') {
+      return res.status(400).json({
+        error: 'user_id is not a number'
+      })
+    }
+
+    const returnGames = await pool.query('SELECT * FROM Games WHERE user_id = ($1)',
+        [user_id]
+    )
+
+    return res.status(200).json({rows: returnGames.rows})
+
+  } catch (err) {
+    return res.status(400).json({ error: err.message })
+  }
+})
+
 app.put('/updateGame', async (req, res) => {
   try {
     const {
@@ -264,18 +290,18 @@ app.delete('/deleteGame', async (req, res) => {
       })
     }
 
-    if(typeof game_id !== 'number'){
-        return res.status(400).json({
+    if (typeof game_id !== 'number') {
+      return res.status(400).json({
         error: 'game_id is not a number'
       })
     }
 
     const deleteGame = await pool.query(
-        'DELETE FROM Games Where game_id = $1 RETURNING *',
-        [game_id]
+      'DELETE FROM Games Where game_id = $1 RETURNING *',
+      [game_id]
     )
 
-    return res.status(200).json({error: 'Game deleted'})
+    return res.status(200).json({ error: 'Game deleted' })
   } catch (err) {
     return res.status(400).json({ error: err.message })
   }
