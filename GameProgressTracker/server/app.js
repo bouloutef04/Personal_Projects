@@ -214,7 +214,7 @@ app.get('/getGames', async (req, res) => {
         [user_id]
     )
 
-    return res.status(200).json({rows: returnGames.rows})
+    return res.status(200).json({rows: returnGames.rows, error:''})
 
   } catch (err) {
     return res.status(400).json({ error: err.message })
