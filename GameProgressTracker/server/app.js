@@ -236,11 +236,46 @@ app.put('/updateGame', async (req, res) => {
     }
 
     const update = await pool.query(
-        'UPDATE Games SET game_name = $1, game_finished = $2, game_totalAchievements = $3, game_achievementsEarned = $4, game_image = $5, game_playTIme = $6 WHERE game_id = $7',
-        [game_name, game_finished, game_totalAchievements, game_achievementsEarned, game_image, game_playTime, game_id]
+      'UPDATE Games SET game_name = $1, game_finished = $2, game_totalAchievements = $3, game_achievementsEarned = $4, game_image = $5, game_playTIme = $6 WHERE game_id = $7',
+      [
+        game_name,
+        game_finished,
+        game_totalAchievements,
+        game_achievementsEarned,
+        game_image,
+        game_playTime,
+        game_id
+      ]
     )
 
     res.status(200).json({ error: '' })
+  } catch (err) {
+    return res.status(400).json({ error: err.message })
+  }
+})
+
+app.delete('/deleteGame', async (req, res) => {
+  try {
+    const { game_id } = req.body
+
+    if (!game_id) {
+      return res.status(400).json({
+        error: 'game_id is missing'
+      })
+    }
+
+    if(typeof game_id !== 'number'){
+        return res.status(400).json({
+        error: 'game_id is not a number'
+      })
+    }
+
+    const deleteGame = await pool.query(
+        'DELETE FROM Games Where game_id = $1 RETURNING *',
+        [game_id]
+    )
+
+    return res.status(200).json({error: 'Game deleted'})
   } catch (err) {
     return res.status(400).json({ error: err.message })
   }
