@@ -6,6 +6,8 @@ const app = require('./app');
 //   console.log(`The server has started on port ${PORT}`);
 // });
 
-app.listen(5001, () => {
+const PORT = 5001;
+
+app.listen(PORT, () => {
   console.log('The server has started on port 5001');
 });
