@@ -49,7 +49,7 @@ app.post('/signup', async (req, res) => {
   }
 })
 
-app.get('/login', async (req, res) => {
+app.post('/login', async (req, res) => {
   try {
     const { username, password, email } = req.body
     if (!username || !password)
@@ -65,8 +65,8 @@ app.get('/login', async (req, res) => {
     }
 
     const checkUsers = await pool.query(
-      'SELECT * FROM Users WHERE user_username = ($1)',
-      [username]
+      'SELECT * FROM Users WHERE user_username = $1 AND user_password = $2',
+      [username, password]
     )
     if (checkUsers.rowCount > 0) {
       return res.status(200).json({ id: checkUsers.rows[0].user_id, error: '' })
@@ -195,7 +195,7 @@ app.post('/createGame', async (req, res) => {
   }
 })
 
-app.get('/getGames', async (req, res) => {
+app.post('/getGames', async (req, res) => {
   try {
     const { user_id } = req.body
 

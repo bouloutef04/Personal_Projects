@@ -1,10 +1,15 @@
-import './App.css';
-import { Fragment } from 'react/jsx-runtime';
+import './App.css'
+import { Fragment } from 'react/jsx-runtime'
+import Signup_Login from './components/Signup_Login'
 
-function App() {
+function App () {
   return (
-    <Fragment> </Fragment>
-  );
+    <Fragment>
+      <div className='container'>
+        <Signup_Login />
+      </div>
+    </Fragment>
+  )
 }
 
-export default App;
+export default App
