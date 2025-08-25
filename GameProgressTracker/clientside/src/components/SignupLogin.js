@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
-const Signup_Login = () => {
+const SignupLogin = () => {
+  const navigate = useNavigate()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [email, setEmail] = useState('')
@@ -13,7 +15,9 @@ const Signup_Login = () => {
 
     try {
       const endpoint =
-        formMode === 'login' ? 'http://localhost:5001/login' : 'http://localhost:5001/signup'
+        formMode === 'login'
+          ? 'http://localhost:5001/login'
+          : 'http://localhost:5001/signup'
 
       const response = await fetch(endpoint, {
         method: 'POST',
@@ -23,6 +27,16 @@ const Signup_Login = () => {
 
       const data = await response.json()
       console.log(data)
+
+      if (!data.error) {
+        // Store user_id (optional)
+        localStorage.setItem('user_id', data.id)
+
+        // Redirect
+        navigate('/dashboard')
+      } else {
+        alert(data.error) // Show error to user
+      }
     } catch (err) {
       console.error(err.message)
     }
@@ -41,7 +55,7 @@ const Signup_Login = () => {
           id='usernameInput'
           name='usernameInput'
           value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={e => setUsername(e.target.value)}
         />
         <br />
         <label htmlFor='password'>Password: </label>
@@ -50,7 +64,7 @@ const Signup_Login = () => {
           id='passwordInput'
           name='passwordInput'
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={e => setPassword(e.target.value)}
         />
         <br />
         <label htmlFor='email'>Email: </label>
@@ -59,7 +73,7 @@ const Signup_Login = () => {
           id='emailInput'
           name='emailInput'
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={e => setEmail(e.target.value)}
         />
         <div className='d-flex mt-4 justify-content-center'>
           <button
@@ -82,4 +96,4 @@ const Signup_Login = () => {
   )
 }
 
-export default Signup_Login;
+export default SignupLogin
