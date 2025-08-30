@@ -58,3 +58,33 @@ table :nth-child(1){
 td :nth-child(even){
   background-color: #999999;
 }
+
+.logout{
+  background-color: red;
+  padding: 10px;
+  margin: 16px;
+  justify-items: right;
+  font-size: 16px;
+  font-style: oblique;
+  float: inline-end;
+}
+
+.delete{
+  background-color: red;
+  padding: 10px;
+  margin: 10px;
+  justify-items: right;
+  font-size: 10px;
+  font-style: oblique;
+  float: right;
+}
+
+.edit{
+  background-color: goldenrod;
+  padding: 10px;
+  margin: 10px;
+  justify-items: right;
+  font-size: 10px;
+  font-style: oblique;
+  float: right;
+}

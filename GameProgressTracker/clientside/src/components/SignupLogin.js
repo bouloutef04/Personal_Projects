@@ -36,10 +36,10 @@ const SignupLogin = () => {
         // Redirect
         navigate('/dashboard')
       } else {
-        alert(data.error) // Show error to user
+        console.log(data.error) // Show error to user
       }
     } catch (err) {
-      console.error(err.message)
+      console.log(err.message)
     }
   }
 
