@@ -67,6 +67,7 @@ td :nth-child(even){
   font-size: 16px;
   font-style: oblique;
   float: inline-end;
+  border-radius: 15px;
 }
 
 .delete{
@@ -77,6 +78,7 @@ td :nth-child(even){
   font-size: 10px;
   font-style: oblique;
   float: right;
+  border-radius: 15px;
 }
 
 .edit{
@@ -87,4 +89,5 @@ td :nth-child(even){
   font-size: 10px;
   font-style: oblique;
   float: right;
+  border-radius: 15px;
 }

@@ -224,15 +224,18 @@ app.post('/getGames', async (req, res) => {
 app.put('/updateGame', async (req, res) => {
   try {
     const {
+      game_id,
       game_name,
       user_id,
-      game_id,
       game_finished,
-      game_totalAchievements,
-      game_achievementsEarned,
+      game_totalachievements,
+      game_achievementsearned,
       game_image,
-      game_playTime
+      game_playtime
     } = req.body
+    console.log(typeof game_id)
+     console.log(typeof game_name)
+      console.log(typeof user_id)
 
     if (!game_name || !user_id || !game_id) {
       return res.status(400).json({
@@ -244,11 +247,27 @@ app.put('/updateGame', async (req, res) => {
         error: 'game_id or user_id is not a number'
       })
 
+      if(typeof game_name !== 'string'){
+      return res.status(400).json({
+        error:
+          'game_name is not a string'
+      })
+    }
+
+    if (
+      typeof game_playtime !== 'number'
+    ) {
+      return res.status(400).json({
+        error:
+          'playtime are not numbers'
+      })
+    }
+
     if (
       typeof game_name !== 'string' ||
-      typeof game_totalAchievements !== 'number' ||
-      typeof game_achievementsEarned !== 'number' ||
-      typeof game_playTime !== 'number'
+      typeof game_totalachievements !== 'number' ||
+      typeof game_achievementsearned !== 'number' ||
+      typeof game_playtime !== 'number'
     ) {
       return res.status(400).json({
         error:
@@ -262,14 +281,14 @@ app.put('/updateGame', async (req, res) => {
     }
 
     const update = await pool.query(
-      'UPDATE Games SET game_name = $1, game_finished = $2, game_totalAchievements = $3, game_achievementsEarned = $4, game_image = $5, game_playTIme = $6 WHERE game_id = $7',
+      'UPDATE Games SET game_name = $1, game_finished = $2, game_totalachievements = $3, game_achievementsearned = $4, game_image = $5, game_playtime = $6 WHERE game_id = $7',
       [
         game_name,
         game_finished,
-        game_totalAchievements,
-        game_achievementsEarned,
+        game_totalachievements,
+        game_achievementsearned,
         game_image,
-        game_playTime,
+        game_playtime,
         game_id
       ]
     )

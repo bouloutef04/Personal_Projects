@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { data, useNavigate } from 'react-router-dom'
 
 const Dashboard = () => {
   const user_id = JSON.parse(localStorage.getItem('user_id'))
@@ -52,19 +52,35 @@ const Dashboard = () => {
     try {
       const endpoint = 'http://localhost:5001/updateGame' // Adjust if needed
 
+      const cleanedData = {
+      game_image: '',
+      user_id: user_id,
+      game_id,
+      game_name: editedGameData.game_name,
+      game_finished: editedGameData.game_finished,
+      game_totalachievements: Number(editedGameData.game_totalachievements),
+      game_achievementsearned: Number(editedGameData.game_achievementsearned),
+      game_playtime: Number(editedGameData.game_playtime) // Ensure it's a number
+    }
+
+    console.log('Sending to backend:', cleanedData);
+
       const response = await fetch(endpoint, {
-        method: 'PUT', // or PATCH
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          game_id,
-          ...editedGameData
-        })
+        body: JSON.stringify(
+          cleanedData
+        )
       })
 
       if (!response.ok) {
-        throw new Error('Failed to update game')
+        const errorText = await response.text()
+        console.error(
+          `Failed to update game. Status: ${response.status}, Message: ${errorText}`
+        )
+        throw new Error('Failed to update game: ', response.json)
       }
 
       // Optionally refetch or update local state
@@ -130,94 +146,102 @@ const Dashboard = () => {
         <tbody>
           {games.map((game, index) => (
             <tr key={game.game_id}>
-  <td>
-    <img
-      src={game.image_url || 'https://...'}
-      alt={game.game_name}
-      width="100"
-    />
-  </td>
-  
-  <td>
-    {editingGameId === game.game_id ? (
-      <input
-        type="text"
-        value={editedGameData.game_name}
-        onChange={(e) =>
-          setEditedGameData({ ...editedGameData, game_name: e.target.value })
-        }
-      />
-    ) : (
-      game.game_name
-    )}
-  </td>
+              <td>
+                <img
+                  src={game.image_url || 'https://...'}
+                  alt={game.game_name}
+                  width='100'
+                />
+              </td>
 
-  <td>
-    {editingGameId === game.game_id ? (
-      <select
-        value={editedGameData.finished}
-        onChange={(e) =>
-          setEditedGameData({ ...editedGameData, finished: e.target.value === 'true' })
-        }
-      >
-        <option value="true">Yes</option>
-        <option value="false">No</option>
-      </select>
-    ) : (
-      game.finished ? 'Yes' : 'No'
-    )}
-  </td>
+              <td>
+                {editingGameId === game.game_id ? (
+                  <input
+                    type='text'
+                    value={editedGameData.game_name || ''}
+                    onChange={e =>
+                      setEditedGameData({
+                        ...editedGameData,
+                        game_name: e.target.value
+                      })
+                    }
+                  />
+                ) : (
+                  game.game_name
+                )}
+              </td>
 
-  <td>
-    {editingGameId === game.game_id ? (
-      <input
-        type="number"
-        value={editedGameData.game_totalachievements}
-        onChange={(e) =>
-          setEditedGameData({
-            ...editedGameData,
-            game_totalachievements: e.target.value,
-          })
-        }
-      />
-    ) : (
-      game.game_totalachievements
-    )}
-  </td>
+              <td>
+                {editingGameId === game.game_id ? (
+                  <select
+                    value={editedGameData.game_finished ?? false}
+                    onChange={e =>
+                      setEditedGameData({
+                        ...editedGameData,
+                        game_finished: e.target.value === 'true'
+                      })
+                    }
+                  >
+                    <option value='true'>Yes</option>
+                    <option value='false'>No</option>
+                  </select>
+                ) : game.game_finished ? (
+                  'Yes'
+                ) : (
+                  'No'
+                )}
+              </td>
 
-  <td>
-    {editingGameId === game.game_id ? (
-      <input
-        type="number"
-        value={editedGameData.game_achievementsearned}
-        onChange={(e) =>
-          setEditedGameData({
-            ...editedGameData,
-            game_achievementsearned: e.target.value,
-          })
-        }
-      />
-    ) : (
-      game.game_achievementsearned
-    )}
-  </td>
+              <td>
+                {editingGameId === game.game_id ? (
+                  <input
+                    type='number'
+                    value={editedGameData.game_totalachievements || 0}
+                    onChange={e =>
+                      setEditedGameData({
+                        ...editedGameData,
+                        game_totalachievements: e.target.value
+                      })
+                    }
+                  />
+                ) : (
+                  game.game_totalachievements
+                )}
+              </td>
 
-  <td>
-    {editingGameId === game.game_id ? (
-      <input
-        type="number"
-        value={editedGameData.game_playtime}
-        onChange={(e) =>
-          setEditedGameData({
-            ...editedGameData,
-            game_playtime: e.target.value,
-          })
-        }
-      />
-    ) : (
-      game.game_playtime
-    )}
-  </td>
+              <td>
+                {editingGameId === game.game_id ? (
+                  <input
+                    type='number'
+                    value={editedGameData.game_achievementsearned || 0}
+                    onChange={e =>
+                      setEditedGameData({
+                        ...editedGameData,
+                        game_achievementsearned: e.target.value
+                      })
+                    }
+                  />
+                ) : (
+                  game.game_achievementsearned
+                )}
+              </td>
+
+              <td>
+                {editingGameId === game.game_id ? (
+                  <input
+                    type='number'
+                    value={editedGameData.game_playtime || 0}
+                    onChange={e =>
+                      setEditedGameData({
+                        ...editedGameData,
+                        game_playtime:Number( e.target.value)
+                      })
+                    }
+                  />
+                ) : (
+                  game.game_playtime
+                )}
+              </td>
               <td>
                 {editingGameId === game.game_id ? (
                   <>
@@ -238,13 +262,15 @@ const Dashboard = () => {
                   </button>
                 )}
               </td>
-              <button
-                className='delete'
-                name={game.game_id}
-                onClick={() => deleteGame(game.game_id)}
-              >
-                Delete
-              </button>
+              <td>
+                <button
+                  className='delete'
+                  name={game.game_id}
+                  onClick={() => deleteGame(game.game_id)}
+                >
+                  Delete
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
