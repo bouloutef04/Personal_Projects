@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom'
 const Dashboard = () => {
   const user_id = JSON.parse(localStorage.getItem('user_id'))
   const navigate = useNavigate()
+  const [editingGameId, setEditingGameId] = useState(null)
+  const [editedGameData, setEditedGameData] = useState({})
 
   function logOut () {
     try {
@@ -46,35 +48,66 @@ const Dashboard = () => {
       })
   }, [])
 
-async function deleteGame(game_id) {
-  try {
-    const body = { game_id };
-    const endpoint = 'http://localhost:5001/deleteGame';
+  const saveEdit = async game_id => {
+    try {
+      const endpoint = 'http://localhost:5001/updateGame' // Adjust if needed
 
-    const response = await fetch(endpoint, {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    });
+      const response = await fetch(endpoint, {
+        method: 'PUT', // or PATCH
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          game_id,
+          ...editedGameData
+        })
+      })
 
-    if (!response.ok) {
-      throw new Error('Failed to delete game');
+      if (!response.ok) {
+        throw new Error('Failed to update game')
+      }
+
+      // Optionally refetch or update local state
+      setGames(prevGames =>
+        prevGames.map(game =>
+          game.game_id === game_id ? { ...game, ...editedGameData } : game
+        )
+      )
+
+      setEditingGameId(null) // Exit edit mode
+    } catch (error) {
+      console.error('Error updating game:', error.message)
     }
-
-    // Refetch the games after deletion
-    const updatedGames = await fetch('http://localhost:5001/getGames', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user_id }),
-    });
-
-    const data = await updatedGames.json();
-    setGames(data.rows);
-  } catch (error) {
-    console.error('Error deleting game:', error.message);
   }
-}
 
+  async function deleteGame (game_id) {
+    try {
+      const body = { game_id }
+      const endpoint = 'http://localhost:5001/deleteGame'
+
+      const response = await fetch(endpoint, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to delete game')
+      }
+
+      // Refetch the games after deletion
+      const updatedGames = await fetch('http://localhost:5001/getGames', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id })
+      })
+
+      const data = await updatedGames.json()
+      setGames(data.rows)
+    } catch (error) {
+      console.error('Error deleting game:', error.message)
+    }
+  }
 
   return (
     <div>
@@ -96,28 +129,118 @@ async function deleteGame(game_id) {
         </thead>
         <tbody>
           {games.map((game, index) => (
-            <tr key={index}>
+            <tr key={game.game_id}>
+  <td>
+    <img
+      src={game.image_url || 'https://...'}
+      alt={game.game_name}
+      width="100"
+    />
+  </td>
+  
+  <td>
+    {editingGameId === game.game_id ? (
+      <input
+        type="text"
+        value={editedGameData.game_name}
+        onChange={(e) =>
+          setEditedGameData({ ...editedGameData, game_name: e.target.value })
+        }
+      />
+    ) : (
+      game.game_name
+    )}
+  </td>
+
+  <td>
+    {editingGameId === game.game_id ? (
+      <select
+        value={editedGameData.finished}
+        onChange={(e) =>
+          setEditedGameData({ ...editedGameData, finished: e.target.value === 'true' })
+        }
+      >
+        <option value="true">Yes</option>
+        <option value="false">No</option>
+      </select>
+    ) : (
+      game.finished ? 'Yes' : 'No'
+    )}
+  </td>
+
+  <td>
+    {editingGameId === game.game_id ? (
+      <input
+        type="number"
+        value={editedGameData.game_totalachievements}
+        onChange={(e) =>
+          setEditedGameData({
+            ...editedGameData,
+            game_totalachievements: e.target.value,
+          })
+        }
+      />
+    ) : (
+      game.game_totalachievements
+    )}
+  </td>
+
+  <td>
+    {editingGameId === game.game_id ? (
+      <input
+        type="number"
+        value={editedGameData.game_achievementsearned}
+        onChange={(e) =>
+          setEditedGameData({
+            ...editedGameData,
+            game_achievementsearned: e.target.value,
+          })
+        }
+      />
+    ) : (
+      game.game_achievementsearned
+    )}
+  </td>
+
+  <td>
+    {editingGameId === game.game_id ? (
+      <input
+        type="number"
+        value={editedGameData.game_playtime}
+        onChange={(e) =>
+          setEditedGameData({
+            ...editedGameData,
+            game_playtime: e.target.value,
+          })
+        }
+      />
+    ) : (
+      game.game_playtime
+    )}
+  </td>
               <td>
-                <img
-                  src={
-                    game.image_url ||
-                    'https://www.nomadfoods.com/wp-content/uploads/2018/08/placeholder-1-e1533569576673.png'
-                  }
-                  alt={game.game_name}
-                  width='100'
-                />
+                {editingGameId === game.game_id ? (
+                  <>
+                    <button onClick={() => saveEdit(game.game_id)}>Save</button>
+                    <button onClick={() => setEditingGameId(null)}>
+                      Cancel
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    className='edit'
+                    onClick={() => {
+                      setEditingGameId(game.game_id)
+                      setEditedGameData({ ...game })
+                    }}
+                  >
+                    Edit
+                  </button>
+                )}
               </td>
-              <td>{game.game_name}</td>
-              <td>{game.finished ? 'Yes' : 'No'}</td>
-              <td>{game.game_totalachievements}</td>
-              <td>{game.game_achievementsearned}</td>
-              <td>{game.game_playtime}</td>
-              <button className='edit' name={index}>
-                Edit
-              </button>
               <button
                 className='delete'
-                name={index}
+                name={game.game_id}
                 onClick={() => deleteGame(game.game_id)}
               >
                 Delete
