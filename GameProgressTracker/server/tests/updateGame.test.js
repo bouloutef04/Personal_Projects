@@ -18,20 +18,20 @@ describe('PUT /updateGame', () => {
       game_name: '_testGame',
       user_id: 1,
       game_finished: false,
-      game_totalAchievements: 0,
-      game_achievementsEarned: 0,
+      game_totalachievements: 0,
+      game_achievementstimeearned: 0,
       game_image: ' ',
-      game_playTime: 0
+      game_playtime: 0
     }
     const newGameRes = await pool.query(
-      'INSERT INTO Games (game_name, game_finished, game_totalAchievements, game_achievementsEarned, game_image, game_playTime, user_id) Values ($1, $2, $3, $4, $5, $6, $7) RETURNING *;',
+      'INSERT INTO Games (game_name, game_finished, game_totalachievements, game_achievementstimeearned, game_image, game_playtime, user_id) Values ($1, $2, $3, $4, $5, $6, $7) RETURNING *;',
       [
         newGame.game_name,
         newGame.game_finished,
-        newGame.game_totalAchievements,
-        newGame.game_achievementsEarned,
+        newGame.game_totalachievements,
+        newGame.game_achievementstimeearned,
         newGame.game_image,
-        newGame.game_playTime,
+        newGame.game_playtime,
         newGame.user_id
       ]
     )
@@ -41,10 +41,10 @@ describe('PUT /updateGame', () => {
       user_id: 1,
       game_id: newGameRes.rows[0].game_id,
       game_finished: true,
-      game_totalAchievements: 20,
-      game_achievementsEarned: 8,
+      game_totalachievements: 20,
+      game_achievementstimeearned: 8,
       game_image: 'fakeImage',
-      game_playTime: 7
+      game_playtime: 7
     }
 
     const response = await request(app).put('/updateGame').send(newGame)
@@ -64,30 +64,30 @@ describe('PUT /updateGame', () => {
       user_id: 1,
       game_id: 1,
       game_finished: false,
-      game_totalAchievements: 0,
-      game_achievementsEarned: 0,
+      game_totalachievements: 0,
+      game_achievementstimeearned: 0,
       game_image: ' ',
-      game_playTime: 0
+      game_playtime: 0
     }
 
     const newGame2 = {
       game_id: 1,
       game_name: '_testGame',
       game_finished: false,
-      game_totalAchievements: 0,
-      game_achievementsEarned: 0,
+      game_totalcchievements: 0,
+      game_achievementstimeearned: 0,
       game_image: ' ',
-      game_playTime: 0
+      game_playtime: 0
     }
 
     const newGame3 = {
       user_id: 1,
       game_name: '_testGame',
       game_finished: false,
-      game_totalAchievements: 0,
-      game_achievementsEarned: 0,
+      game_totalcchievements: 0,
+      game_achievementstimeearned: 0,
       game_image: ' ',
-      game_playTime: 0
+      game_playtime: 0
     }
 
     let response = await request(app).put('/updateGame').send(newGame)
@@ -116,10 +116,10 @@ describe('PUT /updateGame', () => {
       game_name: '_testGame',
       game_id: 1,
       game_finished: false,
-      game_totalAchievements: 0,
-      game_achievementsEarned: 0,
+      game_totalachievements: 0,
+      game_achievementstimeearned: 0,
       game_image: ' ',
-      game_playTime: 0
+      game_playtime: 0
     }
 
     let response = await request(app).put('/updateGame').send(newGame)
@@ -131,10 +131,10 @@ describe('PUT /updateGame', () => {
       game_name: '_testGame',
       game_id: '1',
       game_finished: false,
-      game_totalAchievements: 0,
-      game_achievementsEarned: 0,
+      game_totalachievements: 0,
+      game_achievementstimeearned: 0,
       game_image: ' ',
-      game_playTime: 0
+      game_playtime: 0
     }
 
     response = await request(app).put('/updateGame').send(newGame)
@@ -146,10 +146,10 @@ describe('PUT /updateGame', () => {
       game_name: true,
       game_id: 1,
       game_finished: false,
-      game_totalAchievements: 0,
-      game_achievementsEarned: 0,
+      game_totalachievements: 0,
+      game_achievementstimeearned: 0,
       game_image: ' ',
-      game_playTime: 0
+      game_playtime: 0
     }
 
     response = await request(app).put('/updateGame').send(newGame)
@@ -163,10 +163,10 @@ describe('PUT /updateGame', () => {
       game_name: '_testGame',
       game_id: 1,
       game_finished: false,
-      game_totalAchievements: '0',
-      game_achievementsEarned: 0,
+      game_totalachievements: '0',
+      game_achievementstimeearned: 0,
       game_image: ' ',
-      game_playTime: 0
+      game_playtime: 0
     }
 
     response = await request(app).put('/updateGame').send(newGame)
@@ -180,10 +180,10 @@ describe('PUT /updateGame', () => {
       game_name: '_testGame',
       game_id: 1,
       game_finished: false,
-      game_totalAchievements: 0,
-      game_achievementsEarned: '0',
+      game_totalachievements: 0,
+      game_achievementstimeearned: '0',
       game_image: ' ',
-      game_playTime: 0
+      game_playtime: 0
     }
 
     response = await request(app).put('/updateGame').send(newGame)
@@ -197,10 +197,10 @@ describe('PUT /updateGame', () => {
       game_name: '_testGame',
       game_id: 1,
       game_finished: false,
-      game_totalAchievements: 0,
-      game_achievementsEarned: 0,
+      game_totalachievements: 0,
+      game_achievementstimeearned: 0,
       game_image: ' ',
-      game_playTime: '0'
+      game_playtime: '0'
     }
 
     response = await request(app).put('/updateGame').send(newGame)
@@ -214,10 +214,10 @@ describe('PUT /updateGame', () => {
       game_name: '_testGame',
       game_id: 1,
       game_finished: 20,
-      game_totalAchievements: 0,
-      game_achievementsEarned: 0,
+      game_totalachievements: 0,
+      game_achievementstimeearned: 0,
       game_image: ' ',
-      game_playTime: 0
+      game_playtime: 0
     }
 
     response = await request(app).put('/updateGame').send(newGame)
@@ -231,10 +231,10 @@ describe('PUT /updateGame', () => {
       game_name: '_testGame',
       game_id: 1,
       game_finished: false,
-      game_totalAchievements: 0,
-      game_achievementsEarned: 0,
+      game_totalachievements: 0,
+      game_achievementstimeearned: 0,
       game_image: 2,
-      game_playTime: 0
+      game_playtime: 0
     }
 
     response = await request(app).put('/updateGame').send(newGame)

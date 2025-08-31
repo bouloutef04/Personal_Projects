@@ -52,7 +52,7 @@ table, th, td, tr {
   /* width: 100%; */
 }
 
-table :nth-child(1){
+thead{
   background-color: #D6EEEE;
 }
 td :nth-child(even){
@@ -72,6 +72,7 @@ td :nth-child(even){
 
 .delete{
   background-color: red;
+  color: white;
   padding: 10px;
   margin: 10px;
   justify-items: right;
@@ -86,6 +87,18 @@ td :nth-child(even){
   padding: 10px;
   margin: 10px;
   justify-items: right;
+  font-size: 10px;
+  font-style: oblique;
+  float: right;
+  border-radius: 15px;
+}
+
+.add{
+  background-color: green;
+  color: white;
+  padding: 10px;
+  margin: 10px;
+  justify-items: center;
   font-size: 10px;
   font-style: oblique;
   float: right;

@@ -273,6 +273,12 @@ const Dashboard = () => {
               </td>
             </tr>
           ))}
+          <td>
+            <button
+              className='add'>
+                Add Game 
+              </button>
+          </td>
         </tbody>
       </table>
     </div>
