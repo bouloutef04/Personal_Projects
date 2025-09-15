@@ -96,5 +96,4 @@ const SignupLogin = () => {
     </>
   )
 }
-
 export default SignupLogin
