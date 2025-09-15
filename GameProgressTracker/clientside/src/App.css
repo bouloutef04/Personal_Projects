@@ -85,6 +85,7 @@ td :nth-child(even){
 .add-div{
   padding: 5px;
   row-gap: 5px;
+  flex:content;
 }
 .add-error{
   text-align: center;

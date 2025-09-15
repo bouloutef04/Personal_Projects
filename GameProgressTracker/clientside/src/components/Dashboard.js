@@ -101,6 +101,10 @@ const Dashboard = () => {
   }
 
   function closeForm () {
+    const myForm = document.getElementById("game-addForm")
+    
+    myForm.reset();
+    setAddGameData({})
     document.getElementById('add-game-form').style.display = 'none'
   }
 
@@ -352,7 +356,7 @@ const Dashboard = () => {
         <div id='add_error' className='add-error'>
           /Game/
         </div>
-        <form
+        <form id='game-addForm'
           onSubmit={e => {
             e.preventDefault()
             createGame()
