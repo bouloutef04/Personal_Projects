@@ -70,6 +70,19 @@ td :nth-child(even){
   border-radius: 15px;
 }
 
+.topnav{
+  overflow: hidden;
+  border: 2px black;
+}
+
+.topnav a{
+  float:left;
+  color: #282c34;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
 .add-game-popup{
   display: none;
   padding: 10px;
@@ -86,10 +99,27 @@ td :nth-child(even){
   padding: 5px;
   row-gap: 5px;
   flex:content;
+  background-color: lightgray;
+}
+
+.app-background{
+  background-image: linear-gradient(to bottom, gray, lightgray);
+}
+.shadow-background{
+  background-image: linear-gradient(to bottom,rgb(78, 78, 78), gray);
+}
+
+.page-background{
+  background-image: linear-gradient(to bottom, grey, white);
+  margin: 0;
+  padding: 0; 
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
 }
 .add-error{
   text-align: center;
-  background-color: lightgray;
+  background-color: gray;
   color: red;
   font-weight: bold;
   font-size:xx-large;

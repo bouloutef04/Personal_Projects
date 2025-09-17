@@ -45,6 +45,7 @@ const SignupLogin = () => {
 
   return (
     <>
+    <body className='page-background'>
       <h1 className='text-center mt-5'>Game Progress Tracker Login</h1>
       <form
         className='d-flex mt-2 flex-column justify-content-center'
@@ -93,7 +94,9 @@ const SignupLogin = () => {
           </button>
         </div>
       </form>
+      </body>
     </>
   )
 }
+
 export default SignupLogin
